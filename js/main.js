@@ -25,6 +25,7 @@ let winner;
 const playerImageBox = document.getElementById("p-result");
 const computerImageBox = document.getElementById("c-result");
 const countdwonElement = document.getElementById("countdown");
+const imageElements = document.querySelectorAll("img");
 let playerChoice;
 let computerChoice;
 
@@ -42,6 +43,7 @@ function handleButton(button) {
         ? "paper"
         : "scissors";
     computerChoice = renderComputerChoice();
+    hideImage();
     render();
   });
 }
@@ -62,6 +64,10 @@ function render() {
     scoreRender();
     borderRender();
   });
+}
+
+function hideImage() {
+  imageElements.forEach((image) => (image.style.visibility = "hidden"));
 }
 
 function scoreRender() {
@@ -141,6 +147,7 @@ function renderCountdown(cb) {
       countdwonElement.innerText = count;
     } else {
       countdwonElement.style.visibility = "hidden";
+      imageElements.forEach((image) => (image.style.visibility = "visible"));
       clearInterval(timerId);
       cb();
     }
