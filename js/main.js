@@ -35,17 +35,7 @@ const buttons = document.querySelectorAll("button");
 buttons.forEach(handleButton);
 
 function handleButton(button) {
-  button.addEventListener("click", function (event) {
-    playerChoice =
-      event.target.innerText === "R"
-        ? "rock"
-        : event.target.innerText === "P"
-        ? "paper"
-        : "scissors";
-    computerChoice = renderComputerChoice();
-    hideImage();
-    render();
-  });
+  button.addEventListener("click", buttonClicked);
 }
 /*----- functions -----*/
 init();
@@ -55,6 +45,18 @@ function init() {
   document.getElementById("t-score").innerText = scoreBoard.tie;
   document.getElementById("c-score").innerText = scoreBoard.computer;
   winner = null;
+}
+
+function buttonClicked(event) {
+  playerChoice =
+    event.target.innerText === "R"
+      ? "rock"
+      : event.target.innerText === "P"
+      ? "paper"
+      : "scissors";
+  computerChoice = renderComputerChoice();
+  hideImage();
+  render();
 }
 
 function render() {
@@ -136,6 +138,10 @@ function borderRender() {
 }
 
 function renderCountdown(cb) {
+  function handleButton(button) {
+    button.removeEventListener("click", buttonClicked);
+  }
+  buttons.forEach(handleButton);
   let count = 3;
   AUDIO.currentTime = 0;
   AUDIO.play();
@@ -150,6 +156,10 @@ function renderCountdown(cb) {
       imageElements.forEach((image) => (image.style.visibility = "visible"));
       clearInterval(timerId);
       cb();
+      function handleButton(button) {
+        button.addEventListener("click", buttonClicked);
+      }
+      buttons.forEach(handleButton);
     }
   }, 1000);
 }
